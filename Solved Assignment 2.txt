@@ -1,0 +1,317 @@
+1. Class Library Product
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ShoppingCartLib
+{
+    public class Product
+    {
+        // ProductName : string
+        // Price : decimal
+        // Quantity : int
+
+        private string productName;
+        private decimal price;
+        private int quantity;
+
+        public string ProductName
+        {
+            get { return productName; }
+            set { productName = value; }
+        }
+
+        public decimal Price { get { return price; } set { price = value; } }
+        public int Quantity { get { return quantity; } set { quantity = value; } }
+
+        public Product()
+        {
+            ProductName = "DEMO";
+            Price = 100;
+            Quantity = 1;
+            count++;
+
+        }
+        public Product(string  _productName,decimal _price,int _quantity):this()
+        {
+            ProductName =_productName;
+            Price = _price;
+            Quantity = _quantity;
+
+        }
+
+        public decimal ProductCost()
+        {
+            return Price * Quantity;
+        }
+
+        public override string ToString()
+        {
+            return String.Format($"\n Product {count}\n Product Name : {ProductName}\n Product Price : {Price}\n Product Quantity :{Quantity}\n Product Cost : {ProductCost()}");
+        }
+        private static int count;
+
+        public static int Count
+        {            get { return count; }
+            set { count = value; }
+        }
+    }
+}
+-------------------------------------------------------------
+2. Create Console App AmazonAppusing System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ShoppingCartLib;
+
+namespace AmazonApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Product product = new Product();
+            Console.WriteLine("Default " + product);
+            Console.WriteLine("----- ***** ----- ***** -----");
+            Console.WriteLine("ToString : " + product.ToString());
+
+            Console.WriteLine("----- ***** ----- ***** -----\n");
+
+            Product product2 = new Product("Lemon",3,10);
+            Console.WriteLine(product2);        
+            Console.ReadLine();
+
+        }
+    }
+}
+
+-------------------------------------------------------
+3. Armstrong number between 1 to 1000
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ArmstrongNumber
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("List Of Armstrong Number from 1 to 1000 are below ");
+            int count = 1;
+            for (int i = 1; i < 1000; i++)
+            {
+                int rem = 0, cubevalue = 0;
+                int num = i;
+                while (num > 0)
+                {
+                    rem = num % 10;
+                    cubevalue = cubevalue + (rem * rem * rem);
+                    num = num / 10;
+                }
+                if (i == cubevalue)
+                {
+                    if (count == 1)
+                    {
+                        Console.Write("Number : " + i);
+                        count++;
+                    }
+                    else
+                    {
+                        Console.Write(" , " + i);
+                    }
+                }
+            }
+            Console.ReadLine();
+        }
+    }
+}
+---------------------------------------------------------------------------------------
+4. Neon number between 1 to 1000
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NeonNumber
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("List Of ArstrongNumber from 1 to 1000 are below ");
+
+            for (int i = 1; i < 1000; i++)
+            {
+
+                int num = i*i;
+                int rem = 0;
+                int neonNum = 0;
+
+                while (num > 0)
+                {
+                    rem = num % 10;
+                    neonNum = neonNum + rem;
+                    num = num / 10;
+                }
+                if (i == neonNum)
+                {
+                    Console.WriteLine(" Number : " + i + " Square : " + (i * i));
+                }
+            }
+            Console.ReadLine();
+        }
+    }
+}
+
+---------------------------------------------------------------------------------
+5. Implement Binary search 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BinarySearch
+{
+    internal class Program
+    {
+        static int FindNumber(int[] SampleList, int Key)
+        {
+            int left = 0;
+            int right = SampleList.Length - 1;
+            while (left < right)
+            {
+
+                int mid = (left + right) / 2;
+                if (SampleList[left] == Key)
+                {
+                    return left;
+                }
+                else   if (SampleList[right] == Key)
+                {
+                    return right;
+                }
+                else if (SampleList[mid] == Key)
+                {
+                    return mid;
+                }
+                else if (SampleList[mid] < Key)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+
+                }
+
+            }
+
+            return -1;
+        }
+        static void PrintArrayList(string Title, int[] SampleList)
+        {
+            for (int i = 0; i < SampleList.Length; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("\n\n" + Title + " : " + SampleList[i]);
+                }
+                else
+                {
+                    Console.Write(" , " + SampleList[i]);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            int[] MyArrayList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 18, 21, 32, 45, 49 };
+            int input;
+            PrintArrayList("Array List ", MyArrayList);
+            Console.WriteLine("\nPlease Select Element : ");
+            int.TryParse(Console.ReadLine(), out input);
+
+            int result = FindNumber(MyArrayList, input);
+            if (result != -1)
+            {
+                Console.WriteLine($"Number found at {result+1} position");
+            }
+            else
+            {
+                Console.WriteLine("Number not found.");
+
+            }
+            Console.ReadLine();
+        }
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------
+6. Implement Bubble Sort
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BubbleSort
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] MyArrayList = { 21, 12, 30, 24, 15, 6, 9 };
+            int MyArrayLength = MyArrayList.Length;
+
+            PrintArrayList("Original List", MyArrayList);
+
+            for (int i = 0; i < MyArrayLength - 1; i++)
+            {
+                for (int j = 0; j < MyArrayLength - 1; j++)
+                {
+                    if (MyArrayList[j] > MyArrayList[j + 1])
+                    {
+                        int temp = MyArrayList[j];
+                        MyArrayList[j] = MyArrayList[j + 1];
+                        MyArrayList[j + 1] = temp;
+                    }
+                }
+            }
+
+            PrintArrayList("Sorted List", MyArrayList);
+
+            Console.ReadLine();
+
+            void PrintArrayList(string Title, int[] SampleList)
+            {
+                for (int i = 0; i < SampleList.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        Console.Write("\n\n"+Title + " : " + SampleList[i]);
+                    }
+                    else
+                    {
+                        Console.Write(" , " + SampleList[i]);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
