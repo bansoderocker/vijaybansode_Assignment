@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ShoppingCartLib
+{
+    public class Product
+    {
+        // ProductName : string
+        // Price : decimal
+        // Quantity : int
+
+        private string productName;
+        private decimal price;
+        private int quantity;
+
+        public string ProductName
+        {
+            get { return productName; }
+            set { productName = value; }
+        }
+
+        public decimal Price { get { return price; } set { price = value; } }
+        public int Quantity { get { return quantity; } set { quantity = value; } }
+
+        public Product()
+        {
+            ProductName = "DEMO";
+            Price = 100;
+            Quantity = 1;
+            count++;
+
+        }
+        public Product(string  _productName,decimal _price,int _quantity):this()
+        {
+            ProductName =_productName;
+            Price = _price;
+            Quantity = _quantity;
+
+        }
+
+        public decimal ProductCost()
+        {
+            return Price * Quantity;
+        }
+
+        public override string ToString()
+        {
+            return String.Format($"\n Product {count}\n Product Name : {ProductName}\n Product Price : {Price}\n Product Quantity :{Quantity}\n Product Cost : {ProductCost()}");
+        }
+        private static int count;
+
+        public static int Count
+        {            get { return count; }
+            set { count = value; }
+        }
+    }
+}
