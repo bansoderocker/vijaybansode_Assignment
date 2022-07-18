@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ShoppingCartLib;
+
+namespace AmazonApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Product product = new Product();
+            Console.WriteLine("Default " + product);
+            Console.WriteLine("----- ***** ----- ***** -----");
+            Console.WriteLine("ToString : " + product.ToString());
+
+            Console.WriteLine("----- ***** ----- ***** -----\n");
+
+            Product product2 = new Product("Lemon",3,10);
+            Console.WriteLine(product2);        
+            Console.ReadLine();
+
+        }
+    }
+}
