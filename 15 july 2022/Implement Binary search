@@ -1,0 +1,81 @@
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BinarySearch
+{
+    internal class Program
+    {
+        static int FindNumber(int[] SampleList, int Key)
+        {
+            int left = 0;
+            int right = SampleList.Length - 1;
+            while (left < right)
+            {
+
+                int mid = (left + right) / 2;
+                if (SampleList[left] == Key)
+                {
+                    return left;
+                }
+                else   if (SampleList[right] == Key)
+                {
+                    return right;
+                }
+                else if (SampleList[mid] == Key)
+                {
+                    return mid;
+                }
+                else if (SampleList[mid] < Key)
+                {
+                    left = mid + 1;
+                }
+                else
+                {
+                    right = mid - 1;
+
+                }
+
+            }
+
+            return -1;
+        }
+        static void PrintArrayList(string Title, int[] SampleList)
+        {
+            for (int i = 0; i < SampleList.Length; i++)
+            {
+                if (i == 0)
+                {
+                    Console.Write("\n\n" + Title + " : " + SampleList[i]);
+                }
+                else
+                {
+                    Console.Write(" , " + SampleList[i]);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            int[] MyArrayList = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 16, 18, 21, 32, 45, 49 };
+            int input;
+            PrintArrayList("Array List ", MyArrayList);
+            Console.WriteLine("\nPlease Select Element : ");
+            int.TryParse(Console.ReadLine(), out input);
+
+            int result = FindNumber(MyArrayList, input);
+            if (result != -1)
+            {
+                Console.WriteLine($"Number found at {result+1} position");
+            }
+            else
+            {
+                Console.WriteLine("Number not found.");
+
+            }
+            Console.ReadLine();
+        }
+    }
+}
