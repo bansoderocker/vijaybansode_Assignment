@@ -1,0 +1,43 @@
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ArmstrongNumber
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("List Of Armstrong Number from 1 to 1000 are below ");
+            int count = 1;
+            for (int i = 1; i < 1000; i++)
+            {
+                int rem = 0, cubevalue = 0;
+                int num = i;
+                while (num > 0)
+                {
+                    rem = num % 10;
+                    cubevalue = cubevalue + (rem * rem * rem);
+                    num = num / 10;
+                }
+                if (i == cubevalue)
+                {
+                    if (count == 1)
+                    {
+                        Console.Write("Number : " + i);
+                        count++;
+                    }
+                    else
+                    {
+                        Console.Write(" , " + i);
+                    }
+                }
+            }
+            Console.ReadLine();
+        }
+    }
+}
