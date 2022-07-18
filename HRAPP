@@ -1,1 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using HRLib;
 
+namespace HRAPP
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            ConfirmEmployee confirmEmployee = new ConfirmEmployee("Test", "mumbai", 10000, "developer");
+
+            //  Console.WriteLine(confirmEmployee.Name);
+            Console.WriteLine($" Tranee Details :\n Name : {confirmEmployee.Name}\n Address :  {confirmEmployee.Address}  \n Basic : {confirmEmployee.Basic}\n Designation : {confirmEmployee.Designation} ");
+            Console.WriteLine($" Salary calculation : {confirmEmployee.CalculateSalary()}");
+            Console.WriteLine();
+
+            Trainee trainee = new Trainee("Raju", "Pune", 10, 500);
+
+            Console.WriteLine($" Tranee Details :\n Name : {trainee.Name}\n Address :  {trainee.Address}  \n No of Days : {trainee.NoOfDays}\n Rate per day : {trainee.RatePerDay} ");
+            Console.WriteLine($" Salary calculation : {trainee.CalculateSalary()}");
+
+            Console.WriteLine();
+
+            Trainee trainee2 = new Trainee("Ram", "Ayodha", 100, 600);
+
+            Console.WriteLine($" Trainee Details :\n Name : {trainee2.Name}\n Address :  {trainee2.Address} \n No of Days : {trainee2.NoOfDays}\n Rate per day : {trainee2.RatePerDay} ");
+            Console.WriteLine($" Salary calculation : {trainee2.CalculateSalary()}");
+
+            Console.WriteLine();
+
+            Console.ReadLine();
+        }
+    }
+}
