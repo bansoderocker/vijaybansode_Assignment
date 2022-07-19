@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace JaggedArray
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            /*
+            Shamshera - Hindi,Tamil,Telugu
+            Thor: Love and Thunder - English,Hindi,Malayalam,Kannada,Tamil,Telugu
+            Hit: The First Case - Hindi
+            Rocketry - English,Hindi,Malayalam,Kannada, Tamil,Telugu
+            Minions: The Rise of Gru -English,Telugu,Hindi,Tamil
+            Shabaash Mithu - Hindi        
+            */
+
+
+
+            string[] newMovie = new string[] { "Shamshera", "Thor: Love and Thunder", "Hit: The First Case", "Rocketry", "Minions: The Rise of Gru", "Shabaash Mithu" };
+
+            string[][] movieLanguage = new string[6][];
+
+            movieLanguage[0] = new string[] { "Hindi", "Tamil", "Telugu" };
+            movieLanguage[1] = new string[] { "English", "Hindi", "Malayalam", "Kannada", "Tamil", "Telugu" };
+            movieLanguage[2] = new string[] { "Hindi" };
+            movieLanguage[3] = new string[] { "English", "Hindi", "Malayalam", "Kannada", "Tamil", "Telugu" };
+            movieLanguage[4] = new string[] { "English", "Hindi", "Tamil", "Telugu" };
+            movieLanguage[5] = new string[] { "Hindi" };
+
+            for (int i = 0; i < newMovie.Length; i++)
+            {
+                Console.WriteLine("\nMovie Name : "+newMovie[i]);
+                Console.Write("Movie Language : ");
+                for (int j = 0; j < movieLanguage[i].Length ; j++)
+                {
+                    Console.Write(movieLanguage[i][j] + ",");
+                }
+                Console.WriteLine("\n----------------****--------------------------");
+                Console.WriteLine();
+               
+            }
+            Console.ReadLine();
+
+        }
+    }
+}
