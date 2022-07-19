@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SwapApp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int val1 = 15;
+            int val2 = 38;
+            Console.WriteLine("Original value");
+            Console.WriteLine($"value 1 : {val1} , value 2 : {val2}");
+
+            swapNumber(val1, val2);
+            Console.WriteLine("\nSwap -> call by value");
+            Console.WriteLine($"value 1 : {val1} , value 2 : {val2}");
+
+            swapNumber(ref val1,ref val2);
+            Console.WriteLine("\nSwap -> call by reference");
+            Console.WriteLine($"value 1 : {val1} , value 2 : {val2}");
+
+
+            Console.ReadLine();
+        }
+        public static void swapNumber(int x, int y)
+        {
+
+            int temp = x;
+            x = y;
+            y = temp;
+
+        }
+        public static void swapNumber(ref int x, ref int y)
+        {
+
+            int temp = x;
+            x = y;
+            y = temp;
+
+        }
+    }
+}
