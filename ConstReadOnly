@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConstReadOnly
+{
+    public class Program
+    {
+        readonly int ReadonlyNum2 = 1;
+        readonly int ReadonlyNum1;
+
+        //  ReadonlyNum2 =10;
+       
+        const int ConstNum1 = 0;
+
+        //  const int ConstNum2;   // cannot assign value after decleration
+        //  ConstNum2 = 2;           // value assign only when we create it
+
+        Program()
+        {
+            ReadonlyNum1 = 10;
+           // ConstNum1 = 10;  ///Compiler Error CS0131
+        }
+
+        public void TestReadOnly()
+        {
+          //  ReadonlyNum1 = 10;   // Compiler Error CS0191
+        }
+
+
+
+
+        static void Main(string[] args)
+        {
+            const int num1 = 0;
+          
+
+            // num1++;  // Compiler Error CS1059 1.make variable non-const 2. remove increment and decrement
+
+
+            // ReadonlyNum2 = 10;   //Compiler Error CS0120
+
+          
+        }
+    }
+}
