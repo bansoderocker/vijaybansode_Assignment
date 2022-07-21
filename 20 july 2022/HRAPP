@@ -1,0 +1,117 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using HRLib;
+
+namespace HRAPP
+{
+    internal class Program
+    {
+        static Dictionary<int, Employee> dic = new Dictionary<int, Employee>();
+
+
+        static void Main(string[] args)
+        {
+
+            dic.Clear();
+            ConfirmEmployee confirmEmployee1 = new ConfirmEmployee("Test", "mumbai", 10000, "developer");
+            dic.Add(confirmEmployee1.EmpNo, confirmEmployee1);
+
+            Trainee trainee1 = new Trainee("Raju", "Pune", 10, 500);
+            dic.Add(trainee1.EmpNo, trainee1);
+
+            char permissionFalg = 'N';
+            try
+            {
+                do
+                {
+                    int option = 0;
+                    Console.WriteLine("\n1.Display All Employee\n2.Insert Confirm Employee\n3.Insert Trainee");
+
+
+                    option = Convert.ToInt32(Console.ReadLine());
+                    switch (option)
+                    {
+                        case 1:
+                            DisplayAll();
+                            break;
+                        case 2:
+                            InsertConfirmEmployee();
+                            break;
+                        case 3:
+                            InsertTrainee();
+                            break;
+                        default:
+                            Console.WriteLine("Please try after sometime");
+                            break;
+                    }
+                    Console.Write("\n\nDo you want to continue? Y/N   : ");
+                    permissionFalg = (Console.ReadKey().KeyChar);
+
+                }
+                while (permissionFalg == 'Y' || permissionFalg == 'y');
+
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("Please enter as per input..");
+            }
+            catch (BasicMinimumSalaryException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Console.ReadLine();
+        }
+
+        private static void InsertTrainee()
+        {
+            Trainee trainee = new Trainee();
+            Console.Write("\nPlease enter trainee name : ");
+            trainee.Name = Console.ReadLine();
+            Console.Write("\nPlease enter trainee address : ");
+            trainee.Address = Console.ReadLine();
+            Console.Write("\nPlease enter trainee no of days : ");
+            trainee.NoOfDays = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\nPlease enter employee designation : ");
+            trainee.RatePerDay = Convert.ToDouble(Console.ReadLine());
+
+            dic.Add(trainee.EmpNo, trainee);
+
+            StoreSuccessMsg();
+        }
+
+        private static void InsertConfirmEmployee()
+        {
+            ConfirmEmployee confirmEmployee = new ConfirmEmployee();
+            Console.Write("\nPlease enter employee name : ");
+            confirmEmployee.Name = Console.ReadLine();
+            Console.Write("\nPlease enter employee address : ");
+            confirmEmployee.Address = Console.ReadLine();
+            Console.Write("\nPlease enter employee basic : ");
+            //------ Validation remaining
+            confirmEmployee.Basic = Convert.ToDouble(Console.ReadLine());
+            // checkBasicSalary(confirmEmployee.Basic);
+            Console.Write("\nPlease enter employee designation : ");
+            confirmEmployee.Designation = Console.ReadLine();
+
+            dic.Add(confirmEmployee.EmpNo, confirmEmployee);
+            StoreSuccessMsg();
+        }
+
+       
+
+        private static void DisplayAll()
+        {
+            foreach (KeyValuePair<int, Employee> keys in dic)
+            {
+                Console.WriteLine(keys.Value);
+            }
+        }
+        private static void StoreSuccessMsg()
+        {
+            Console.WriteLine("Employee data stored successfully.\n");
+        }
+    }
+}
