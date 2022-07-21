@@ -28,7 +28,7 @@ namespace HRAPP
                 do
                 {
                     int option = 0;
-                    Console.WriteLine("\n1.Display All Employee\n2.Insert Confirm Employee\n3.Insert Trainee");
+                    Console.WriteLine("\n1.Display All Employee\n2.Insert Confirm Employee\n3.Insert Trainee\n4.Delete employee by ID\n5.Delete All Employee");
 
 
                     option = Convert.ToInt32(Console.ReadLine());
@@ -43,6 +43,12 @@ namespace HRAPP
                         case 3:
                             InsertTrainee();
                             break;
+                        case 4:
+                            DeleteEmp();
+                            break;
+                        case 5:
+                            DeleteAll();
+                                break;
                         default:
                             Console.WriteLine("Please try after sometime");
                             break;
@@ -63,6 +69,14 @@ namespace HRAPP
                 Console.WriteLine(ex.Message);
             }
             Console.ReadLine();
+        }
+
+        private static void DeleteEmp()
+        {
+            Console.Write("\nPlease enter employee id : ");
+            int id = Convert.ToInt32(Console.ReadLine());
+            dic.Remove(id);
+            Console.WriteLine("Employee removed");
         }
 
         private static void InsertTrainee()
@@ -90,7 +104,6 @@ namespace HRAPP
             Console.Write("\nPlease enter employee address : ");
             confirmEmployee.Address = Console.ReadLine();
             Console.Write("\nPlease enter employee basic : ");
-            //------ Validation remaining
             confirmEmployee.Basic = Convert.ToDouble(Console.ReadLine());
             // checkBasicSalary(confirmEmployee.Basic);
             Console.Write("\nPlease enter employee designation : ");
@@ -100,7 +113,7 @@ namespace HRAPP
             StoreSuccessMsg();
         }
 
-       
+
 
         private static void DisplayAll()
         {
@@ -109,6 +122,14 @@ namespace HRAPP
                 Console.WriteLine(keys.Value);
             }
         }
+        private static void DeleteAll()
+        {
+            dic.Clear();
+
+            Console.Write("All employees removed... ");
+        }
+
+
         private static void StoreSuccessMsg()
         {
             Console.WriteLine("Employee data stored successfully.\n");
