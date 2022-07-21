@@ -1,0 +1,198 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MinMaxValue
+{
+    internal class Program
+    {
+
+        enum MaxMinEnum { Min,Max }
+
+        static void Main(string[] args)
+        {
+            int[] myArray = { 11, 32, 9, 18, 90, 28 };
+
+         //   CheckMaxMinArray(myArray);
+            //--------------------
+            MaxMinValue pair = new MaxMinValue();
+
+            pair = CheckMaxMinArray2(myArray);
+            Console.WriteLine($"By Class -> Max : {pair.Max} , Min : {pair.Min}");
+
+
+            MaxMinValue pair2 = new MaxMinValue(myArray);
+            Console.WriteLine($"By parameter constructor -> Max2 : {pair2.Max} , Min2 : {pair2.Min}");
+
+            //-------------------
+            
+            int max3=0,min3=0;
+            CheckMaxMinArray3(myArray,ref max3,ref min3);
+
+            Console.WriteLine($"ref variable -> Max3 : {max3} , Min3 : {min3}");
+
+            //-----------------------
+
+            int[] result = CheckMaxMinArray4(myArray);
+            Console.WriteLine($"intArray -> Max4 : {result[0]} , Min4 : {result[1]}");
+
+            ///---------------------------------------------------------
+            
+            Dictionary<string,int> dictionary1 = new Dictionary<string,int>();
+
+            dictionary1 = CheckMaxMinArray5(myArray);
+
+            Console.WriteLine($"Dictionary -> Max5 : {dictionary1["Max"]} , Min5 : {dictionary1["Min"]}");
+
+            //------------------------------------------
+            //   enum level3 { Min, Max };
+            // enum level2 =(level) Enum.Parse(CheckMaxMinArray6(myArray));
+          //  level eVal = (level)Enum.Parse(typeof(level), "");
+
+            Console.WriteLine($"Enum -> Max6 : {(int)MaxMinEnum.Max} , Min6 : {(int)MaxMinEnum.Min}");
+
+            //-------------------------------------------------------
+            List<MaxMinValue> maxMinsList = new List<MaxMinValue>();
+            maxMinsList = CheckMaxMinArray7(myArray);
+
+            Console.WriteLine($"list -> Max7 : {maxMinsList[0].Max} , Min7 : {maxMinsList[0].Min}");
+            Console.ReadLine();
+
+        }
+
+     
+        public static void CheckMaxMinArray(int[] myArray)
+        {
+            int max, min;
+            max = myArray[0];
+            min = myArray[0];
+
+            for (int i = 1; i < myArray.Length; i++)
+            {
+
+                if (max < myArray[i])
+                {
+                    max = myArray[i];
+                }
+                if (min > myArray[i])
+                {
+                    min = myArray[i];
+                }
+            }
+
+            Console.WriteLine($" Max : {max} , min : {min}");
+        }
+
+        public static MaxMinValue CheckMaxMinArray2(int[] myArray)
+        {
+            MaxMinValue pair1 = new MaxMinValue();
+            pair1.Max = myArray[0];
+            pair1.Min = myArray[0];
+
+            foreach (int i in myArray)
+            {
+                if (pair1.Max < i) { pair1.Max = i; }
+                if (pair1.Min > i) { pair1.Min = i; }
+            }
+
+
+            return pair1;
+        }
+
+
+        private static void CheckMaxMinArray3(int[] myArray, ref int max3, ref int min3)
+        {
+           int lenght = myArray.Length;
+            for(int i = 0; i < lenght; i++)
+            {
+                if (i == 0)
+                {
+                    max3 = myArray[0];
+                    min3 = myArray[0];
+                }
+                else
+                {
+                    if (max3 < myArray[i])
+                    {      
+                        max3 = myArray[i];
+                    }      
+                    if (min3 > myArray[i])
+                    {      
+                        min3 = myArray[i];
+                    }
+                }
+            }
+        }
+
+        private static int[] CheckMaxMinArray4(int[] myArray)
+        {
+            int[] result = new int[2];
+
+            result[0] = myArray[0];
+            result[1] = myArray[0];
+
+            for (int i = 1; i < myArray.Length; i++)
+            {
+
+                if (result[0] < myArray[i])
+                {
+                    result[0] = myArray[i];
+                }
+                if (result[1] > myArray[i])
+                {
+                    result[1] = myArray[i];
+                }
+            }
+            return result;
+        }
+
+        private static Dictionary<string, int> CheckMaxMinArray5(int[] myArray)
+        {
+            Dictionary<string, int> keyValuePairs = new Dictionary<string, int>();
+
+            keyValuePairs["Max"] = myArray[0];
+            keyValuePairs["Min"] = myArray[0];
+
+            foreach (int i in myArray)
+            {
+                if (keyValuePairs["Max"] < i) { keyValuePairs["Max"] = i; }
+                if (keyValuePairs["Min"] > i) { keyValuePairs["Min"] = i; }
+            }
+
+
+
+            return keyValuePairs;
+        }
+
+        private static MaxMinEnum CheckMaxMinArray6(int[] myArray)
+        {
+            //  MaxMinLevel maxMinLevel = new MaxMinLevel();
+            MaxMinEnum Level = (MaxMinEnum)myArray[0];
+
+           // ((int)Level.GetType())
+
+            return Level;
+        }
+
+        private static List<MaxMinValue> CheckMaxMinArray7(int[] myArray)
+        {
+          List<MaxMinValue> list = new List<MaxMinValue>();
+            list.Add(new MaxMinValue());
+            list[0].Max = myArray[0];
+            list[0].Min = myArray[0];
+
+            foreach (int i in myArray)
+            {
+                if (list[0].Max < i) { list[0].Max = i; }
+                if (list[0].Min > i) { list[0].Min = i; }
+            }
+
+            return list;
+
+        }
+
+
+    }
+}
