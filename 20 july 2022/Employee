@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HRLib
+{
+
+    public abstract class Employee
+    {
+        static int count ;
+        int empNo;
+        string name;
+        string address;
+
+        public string Name { get { return name; } set { name = value; } }
+        public string Address { get { return address; } set { address = value; } }
+
+         public int EmpNo { get { return empNo; } set { empNo = value; } }
+
+
+        public Employee()
+        {
+            count++;
+            EmpNo = count;
+        }
+
+        public Employee(string name, string address) : this()
+        {
+
+            Name = name;
+            Address = address;
+        }
+
+        public abstract double CalculateSalary();
+
+        public override string ToString()
+        {
+            return "\nEmpNo: " + EmpNo + ", Name : " + Name + ",Address : " + Address + " ,";
+        }
+    }
+}
