@@ -1,0 +1,167 @@
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using ProductLib;
+
+    namespace ProductCollection
+    {
+        internal class Program
+        {
+            static Dictionary<string, Product> dic = new Dictionary<string, Product>();
+            static void Main(string[] args)
+            {
+                dic.Clear();
+                Product product1 = new Product("Sumsung TV", 1000, 20);
+                Product product2 = new Product("Sumsung Mobile", 2000, 10);
+                dic.Add(product1.ProductName, product1);
+                dic.Add(product2.ProductName, product2);
+
+                Dictionary<string, Product> dic2 = new Dictionary<string, Product>();
+              
+                char process = 'Y';
+                do
+                {
+                    Console.Write("\n 1 Add\n 2 Delete\n 3 Display\n 4 Search\n 5 Query\n 6 Quit ");
+                    Console.Write("\n Enter choice : ");
+                    process = (Console.ReadKey().KeyChar);
+                    Console.WriteLine();
+                    switch (process)
+                    {
+                        case '1':
+                            GetProductDetails();
+                            break;
+                        case '2':
+                            Console.Write("\nPlease Enter Product Name : ");
+                            DeleteProduct(Console.ReadLine());
+                            break;
+                        case '3':
+                            PrintData(DisplayAll());
+                            break;
+                        case '4':
+                            Console.Write("\nPlease Enter Product Name : ");
+                            PrintData(Search(Console.ReadLine()));
+                            break;
+                        case '5':
+                            Console.Write("Please Enter Operator : ");
+                            string _oper = Console.ReadLine();
+                            Console.Write("Please Enter Price : ");
+                            double _price = Convert.ToDouble(Console.ReadLine());
+                            PrintData(QueryPrice(_oper, _price));
+
+                            break;
+                        case '6':
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Please try after sometime");
+                            break;
+
+                    }
+
+                    Console.Write("\n\nDo you want to continue? Y/N   : ");
+                    process = char.ToUpper(Console.ReadKey().KeyChar);
+
+                } while (process == 'Y' || process == 'y');
+
+
+                Environment.Exit(0);
+                Console.ReadLine();
+
+            }
+            public static void GetProductDetails()
+            {
+                string ProductName;
+                double Price ;
+                int Quantity ;
+                try
+                {
+                    Console.Write("\nPlease Enter Product Name : ");
+                    ProductName = Console.ReadLine();
+                    Console.Write("Please Enter Product Price : ");
+                    Price = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Please Enter Product Quantity : ");
+                    Quantity = Convert.ToInt32(Console.ReadLine());
+           
+                Product product1 = new Product(ProductName, Price, Quantity);
+                AddProduct(product1);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Please enter in proper format");
+                }
+
+            }
+
+
+            public static void AddProduct(Product product)
+            {
+                dic.Add(product.ProductName, product);
+                Console.WriteLine($"{product.ProductName} data is added..\n");
+            }
+            public static void DeleteProduct(string productName)
+            {
+                dic.Remove(productName);
+                Console.WriteLine($"productName data is removed.");
+            }
+            public static Dictionary<string, Product> DisplayAll()
+            {
+
+                return dic;
+            }
+            public static Dictionary<string, Product> Search(string productName)
+            {
+
+                Dictionary<string, Product> dic1 = new Dictionary<string, Product>();
+
+                foreach (KeyValuePair<string, Product> key in dic)
+                {
+                    if (key.Equals(productName))
+                    {
+                        dic1.Add(key.Key, key.Value);
+                    }
+                }
+                return dic1;
+            }
+            public static Dictionary<string, Product> QueryPrice(string _operator, double _price)
+            {
+                Dictionary<string, Product> dic1 = new Dictionary<string, Product>();
+
+                foreach (KeyValuePair<string, Product> key in dic)
+                {
+                    if (GetQuery(key.Value.Price, _operator, _price))
+                    {
+                        Console.WriteLine(key.Value);
+                    }
+
+                }
+                return dic1;
+            }
+
+            private static bool GetQuery(double price1, string _operator, double price2)
+            {
+                switch (_operator)
+                {
+                    case ">":
+                        return price1 > price2;
+                    case "<":
+                        return price1 < price2;
+                    case "==":
+                        return price1 == price2;
+                    default:
+                        return false;
+
+                }
+            }
+
+            private static void PrintData(Dictionary<string, Product> dic2)
+            {
+                foreach (KeyValuePair<string, Product> kvp in dic2)
+                {
+                    Console.WriteLine(kvp.Value);
+                }
+            }
+        }
+
+    }
