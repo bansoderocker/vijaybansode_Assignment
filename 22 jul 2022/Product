@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ProductLib
+{
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public double Price { get; set; }
+        public int Quantity { get; set; }
+
+        private readonly double Total;
+
+        public Product() { }
+
+        public Product(string productName, double price, int quantity)
+        {
+            ProductName = productName;
+            Price = price;
+            Quantity = quantity;
+            Total = Price * Quantity;
+        }
+
+        public override string ToString()
+        {
+            return $"\n Product Details \n Name : {ProductName},\n Price : {Price},\n Quantity : {Quantity},\n Total : {Total}";
+        }
+
+
+
+    }
+}
