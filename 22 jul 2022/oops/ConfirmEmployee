@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HRLib
+{
+    public class ConfirmEmployee : Employee 
+    {
+        double basic;
+        string designation;
+
+        public double Basic { get { return basic; } set { basic = value;
+                if (value < 5000)
+                {
+                    throw new BasicMinimumSalaryException("Please enter basic salary greater than 5000");
+                }
+                else {
+                    basic = value;
+                }
+
+            } }
+        public string Designation { get { return designation; } set { designation = value; } }
+
+        public ConfirmEmployee() { }
+
+        public ConfirmEmployee(string name, string address, double basic, string designation) : base(name, address)
+        { 
+            Basic = basic;
+            Designation = designation;
+        }
+
+
+
+        public override double CalculateSalary()
+        {
+            double NetSalary = 0;
+            double Hra = 0, Conv = 0, PF = 0;
+
+
+            if (Basic >= 30000)
+            {
+                Hra = Basic * 30 / 100;
+                Conv = Basic * 30 / 100;
+            }
+            else if (Basic >= 20000)
+            {
+                Hra = Basic * 20 / 100;
+                Conv = Basic * 20 / 100;
+            }
+            else
+            {
+                Hra = Basic * 10 / 100;
+                Conv = Basic * 10 / 100;
+            }
+            PF = Basic * 10 / 100;
+            NetSalary = Basic + Hra + Conv - PF;
+
+            return NetSalary;
+
+        }
+        //private static void checkBasicSalary(double basic)
+        //{
+        //    if (basic < 5000)
+        //    {
+        //        throw new BasicMinimumSalaryException("Please enter basic salary greater than 5000");
+        //    }
+        //}
+
+        public override string ToString()
+        {
+            return base.ToString()+" Basic salary : "+Basic+", Designation : "+Designation;
+        }
+
+       
+    }
+}
