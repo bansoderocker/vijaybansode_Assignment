@@ -1,0 +1,394 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Data;
+
+namespace DataDBLib
+{
+    public class EmpDataSource : IEmpDataSource
+    {
+        SqlConnection connection = null;
+        SqlCommand command = null;
+        SqlDataReader reader = null;
+
+        public EmpDataSource(string connectionString)
+        {
+            connection = new SqlConnection(connectionString);
+        }
+        public List<EMP> GetEmpData()
+        {
+
+            try
+            {
+                string sql = "Select Empno,Ename,HireDate,Sal from Emp";
+                command = new SqlCommand(sql, connection);
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                reader = command.ExecuteReader();
+                List<EMP> emps = new List<EMP>();
+                while (reader.Read())
+                {
+                    EMP emp = new EMP();
+                    emp.EmpNo = Convert.ToInt32(reader["EmpNo"].ToString());
+                    emp.EName = reader["Ename"].ToString();
+
+                    DateTime? dt = null;
+                    DateTime dte = Convert.ToDateTime(dt);
+
+                    if (!string.IsNullOrEmpty(reader["HireDate"].ToString()))
+                    {
+                        emp.HireDate = Convert.ToDateTime(reader["HireDate"].ToString());
+                    }
+                    if (!string.IsNullOrEmpty(reader["Sal"].ToString()))
+                    {
+                        emp.Sal = Convert.ToDecimal(reader["Sal"].ToString());
+                    }
+                    emps.Add(emp);
+                }
+
+                return emps;
+
+
+            }
+            catch (Exception ex) { throw ex; }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+
+        }
+
+
+        public EMP GetEmpById(int empId)
+        {
+
+            try
+            {
+                string sql = "Select Empno,Ename,HireDate,Sal from Emp where Empno = @empId";
+                command = new SqlCommand(sql, connection);
+                command.Parameters.Add("empId", empId);
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                reader = command.ExecuteReader();
+
+
+                EMP emp = null;
+
+                while (reader.Read())
+                {
+                    emp = new EMP();
+                    emp.EmpNo = Convert.ToInt32(reader["EmpNo"].ToString());
+                    emp.EName = reader["Ename"].ToString();
+
+
+                    if (!string.IsNullOrEmpty(reader["HireDate"].ToString()))
+                    {
+                        emp.HireDate = Convert.ToDateTime(reader["HireDate"].ToString());
+                    }
+                    if (!string.IsNullOrEmpty(reader["Sal"].ToString()))
+                    {
+                        emp.Sal = Convert.ToDecimal(reader["Sal"].ToString());
+                    }
+
+                }
+                return emp;
+
+
+            }
+            catch (Exception ex) { throw ex; }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+
+
+        public bool AddEmp(EMP emp)
+        {
+            try
+            {
+                string sql = "INSERT INTO EMP (EMPNO,ENAME,HIREDATE,SAL)VALUES (@EMPNO,@ENAME,@HIREDATE,@SAL)";
+                command = new SqlCommand(sql, connection);
+                command.Parameters.Add("EMPNO", emp.EmpNo);
+                command.Parameters.Add("ENAME", emp.EName);
+                command.Parameters.Add("HIREDATE", emp.HireDate);
+                command.Parameters.Add("SAL", emp.Sal);
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+        public bool AddEmp_SP(EMP emp)
+        {
+            try
+            {
+                //  string sql = "INSERT INTO EMP (EMPNO,ENAME,HIREDATE,SAL)VALUES (@EMPNO,@ENAME,@HIREDATE,@SAL)";
+                command = new SqlCommand("INSERTEMP", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("EMPNO", emp.EmpNo);
+                command.Parameters.Add("ENAME", emp.EName);
+                command.Parameters.Add("HIREDATE", emp.HireDate);
+                command.Parameters.Add("SAL", emp.Sal);
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+        public bool UpdateEmp(EMP emp)
+        {
+            try
+            {
+                string sql = "Update EMP set ENAME = @ENAME,HIREDATE=@HIREDATE,SAL=@SAL where EMPNO =@EMPNO";
+                command = new SqlCommand(sql, connection);
+                command.Parameters.Add("EMPNO", emp.EmpNo);
+                command.Parameters.Add("ENAME", emp.EName);
+                command.Parameters.Add("HIREDATE", emp.HireDate);
+                command.Parameters.Add("SAL", emp.Sal);
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+        public bool UpdateEmp_SP(EMP emp)
+        {
+            try
+            {
+                // string sql = "Update EMP set ENAME = @ENAME,HIREDATE=@HIREDATE,SAL=@SAL where EMPNO =@EMPNO";
+                command = new SqlCommand("UPDATEEMP", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("EMPNO", emp.EmpNo);
+                command.Parameters.Add("ENAME", emp.EName);
+                command.Parameters.Add("HIREDATE", emp.HireDate);
+                command.Parameters.Add("SAL", emp.Sal);
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+        public bool DeleteEmp(int empNo)
+        {
+            try
+            {
+                string sql = "Delete from EMP where EMPNO =@EMPNO";
+                command = new SqlCommand(sql, connection);
+                command.Parameters.Add("EMPNO", empNo);
+
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+        public bool DeleteEmp_SP(int empNo)
+        {
+            try
+            {
+                // string sql = "Delete from EMP where EMPNO =@EMPNO";
+                command = new SqlCommand("DELETEEMP", connection);
+                command.Parameters.Add("EMPNO", empNo);
+
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                int result = command.ExecuteNonQuery();
+
+                if (result > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+        }
+
+
+        public bool ValidateUser(USERDATA user)
+        {
+
+            try
+            {
+                command = new SqlCommand("ValidateUser", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("username", user.Username);
+                command.Parameters.Add("password", user.Password);
+
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if (Convert.ToInt32(reader["result"].ToString()) == 1) { return true; }
+                    else { return false; }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+           
+        }
+
+        public bool ValidateUserDisConn(USERDATA user)
+        {
+            string sql = $"select top 1 1 result from USERDATA where USERNAME = '{user.Username}' and PASSWORD = '{user.Password}'";
+            SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            if (dt != null && dt.Rows.Count==1) {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
