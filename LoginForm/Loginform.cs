@@ -14,17 +14,17 @@ namespace WindowsFormsAppDB
 {
     public partial class LoginForm : Form
     {
-        EmpDataSource empDataSource;
+        UserdataStore userDataSource;
         public LoginForm()
         {
             InitializeComponent();
-            empDataSource = new EmpDataSource(ConfigurationManager.ConnectionStrings["connstr"].ConnectionString);
+            userDataSource = new UserdataStore(ConfigurationManager.ConnectionStrings["connstr"].ConnectionString);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
             VerifyUser(1);
-        }  
+        }       
 
         private void btnLoginDisConn_Click(object sender, EventArgs e)
         {
@@ -43,10 +43,10 @@ namespace WindowsFormsAppDB
 
                 if (a == 1)
                 {
-                    result_flag = empDataSource.ValidateUser(user);
+                    result_flag = userDataSource.ValidateUser(user);
                 }
                 else {
-                    result_flag = empDataSource.ValidateUserDisConn(user);
+                    result_flag = userDataSource.ValidateUserDisConn(user);
                 }
 
                 if (result_flag)
@@ -67,6 +67,8 @@ namespace WindowsFormsAppDB
                 MessageBox.Show(ex.Message);
             }
             finally { clearTextbox(); }
+
+
         }
 
         void clearTextbox()
