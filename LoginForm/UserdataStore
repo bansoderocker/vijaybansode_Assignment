@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+
+
+namespace DataDBLib
+{
+    public class UserdataStore
+    {
+        SqlConnection connection = null;
+        SqlCommand command = null;
+        SqlDataReader reader = null;
+
+        public UserdataStore(string connectionString)
+        {
+            connection = new SqlConnection(connectionString);
+        }
+
+        public bool ValidateUser(USERDATA user)
+        {
+
+            try
+            {
+                command = new SqlCommand("ValidateUser", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add("username", user.Username);
+                command.Parameters.Add("password", user.Password);
+
+
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+
+                reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (connection.State == ConnectionState.Open) { connection.Close(); }
+            }
+
+        }
+
+        public bool ValidateUserDisConn(USERDATA user)
+        {
+            string sql = $"select top 1 1 result from USERDATA where USERNAME = '{user.Username}' and PASSWORD = '{user.Password}'";
+            SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+
+            if (dt != null && dt.Rows.Count == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+}
