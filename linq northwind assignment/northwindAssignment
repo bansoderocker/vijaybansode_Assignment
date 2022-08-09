@@ -1,0 +1,225 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NorthwindAssignment
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            NorthwindEntities db = new NorthwindEntities();
+
+            Console.WriteLine("1.LIST ALL THE DATA FROM THE Product TABLE");
+            var AllProduct = from p in db.Products select p;
+            foreach (var product in AllProduct)
+            {
+                Console.WriteLine($"{product.ProductID} \t {product.ProductName} \t {product.CategoryID} \t\t {product.UnitPrice}");
+            }
+
+
+
+            Console.WriteLine("2.LIST ALL THE DATA FROM THE Product TABLE ORDER BY ProductName");
+            var AllProductByOrderPName = from p in db.Products orderby p.ProductName select p;
+            foreach (var product in AllProductByOrderPName)
+            {
+                Console.WriteLine($"{product.ProductID} \t {product.ProductName} \t {product.CategoryID} \t\t {product.UnitPrice}");
+            }
+            Console.WriteLine("3.LIST ALL THE DATA FROM THE Product TABLE Where QuantityPerUnit can be 'jars' or 'bottles'S");
+            var ProductQuwery3 = from p in db.Products
+                                 where p.QuantityPerUnit.Contains("jars") || p.QuantityPerUnit.Contains("bottles")
+                                 select p;
+            foreach (var product in ProductQuwery3)
+            {
+                Console.WriteLine($"{product.ProductID} \t {product.ProductName} \t {product.CategoryID} \t\t {product.UnitPrice}\t{product.QuantityPerUnit}");
+            }
+
+            Console.WriteLine("4.From Product table LIST DISTINCT CategoryID");
+            var DistinctProduct = (from p in db.Products select new { p.CategoryID }).Distinct();
+            foreach (var dp in DistinctProduct)
+            {
+                Console.WriteLine(dp.CategoryID);
+            }
+
+            Console.WriteLine(" 5.List all the products whose UnitsInStock is less the Reorder level");
+
+            var ProductQuery5 = from p in db.Products where p.UnitsInStock < p.ReorderLevel select p;
+
+            foreach (var p in ProductQuery5)
+            {
+                Console.WriteLine($"{p.ProductID} \t {p.ProductName} \t {p.CategoryID} \t\t {p.UnitPrice}\t{p.UnitsInStock} \t {p.ReorderLevel}");
+            }
+
+            Console.WriteLine("6.List all the products which are discontinued");
+            var ProductDiscontinued = from p in db.Products where p.Discontinued == true select p;
+            foreach (var p in ProductDiscontinued)
+            {
+                Console.WriteLine($"{p.ProductID} \t {p.ProductName} \t {p.CategoryID} \t {p.UnitPrice}\t{p.Discontinued}");
+            }
+
+            Console.WriteLine("7.List all product id, name, unitprice, unitinstock and stock value(UnitPrice* UnitsInStock)");
+            //arrange all the record as per stock value highest to lowest
+            //remove the records where stock value is zero(0)
+
+            var ProductQuery7 = from p in db.Products
+                                orderby (p.UnitPrice * p.UnitsInStock) descending
+                                where (p.UnitPrice * p.UnitsInStock) != 0
+                                select new { p.ProductID, p.ProductName, p.CategoryID, p.UnitPrice, p.UnitsInStock, stock = (p.UnitPrice * p.UnitsInStock) };
+
+            foreach (var product in ProductQuery7)
+            {
+                Console.WriteLine($"{product.ProductID} \t {product.ProductName} \t {product.CategoryID} \t {product.UnitPrice}\t{product.UnitsInStock} \t {product.stock}");
+            }
+
+            Console.WriteLine(" 8.DISPLAY FirstName, LastName, Country, City OF ALL EMPLOYEES, SORTED ON DESCENDING ORDER OF Country AND WITHIN Country SORTED ON THE DESCENDING ORDER OF City");
+
+            var EmployeeQuery8 = from e in db.Employees
+                                 orderby e.Country descending, e.City descending
+                                 select e;
+
+            foreach (var employee in EmployeeQuery8)
+            {
+                Console.WriteLine(employee.FirstName + "\t" + employee.LastName + "\t" + employee.Country + "\t" + employee.City);
+            }
+
+            Console.WriteLine("9.List all employees staying in USA - Seattle");
+            var EmployeeQuery9 = from e in db.Employees where e.Country == "USA" && e.City == "Seattle" select e;
+
+            foreach (var employee in EmployeeQuery9)
+            {
+                Console.WriteLine(employee.EmployeeID + "  " + employee.FirstName + "\t" + employee.LastName + " " + employee.Country + "\t" + employee.City);
+            }
+
+
+            Console.WriteLine("10 List all employees hired in October 1993");
+            var EmployeeQuery10 = from e in db.Employees where e.HireDate.Value.Year == 1993 && e.HireDate.Value.Month == 10 select e;
+
+            foreach (var employee in EmployeeQuery10)
+            {
+                Console.WriteLine(employee.EmployeeID + "  " + employee.FirstName + "\t" + employee.LastName + " " + employee.Country + "\t" + employee.City);
+            }
+
+            Console.WriteLine("11 LIST TOTAL stock of all the products");
+            decimal? prductquery11 = (from p in db.Products select p.UnitPrice * p.UnitsInStock).Sum();
+
+            Console.WriteLine("Total stock value " + prductquery11);
+
+
+            Console.WriteLine("12.LIST TOTAL EMPLOYEES WORKS IN EACH DEPARTMENT");
+
+            PITECHEntities db2 = new PITECHEntities();
+
+
+            var deptEmpCount = from d in db2.EMPs
+                               group d by d.DEPTNO into temp
+                               select new { Deptno = temp.Key, EmpCount = temp.Count() };
+
+            foreach (var dept in deptEmpCount)
+            {
+
+                Console.WriteLine(dept.Deptno + " count " + dept.EmpCount);
+            }
+
+
+
+            Console.WriteLine("13 LIST FIRST THREE costliest Products");
+            var CostliestProduct = (from p in db.Products orderby p.UnitPrice descending select p).Take(3);
+            foreach (var product in CostliestProduct)
+            {
+                Console.WriteLine($"{product.ProductID} \t {product.ProductName} \t {product.UnitPrice}");
+            }
+
+            Console.WriteLine(" 14 insert two Category records  Electronics , Stationary");
+            db.Categories.Add(new Category { CategoryName = "Electronics" });
+            db.Categories.Add(new Category { CategoryName = "Stationary" });
+            int rows = db.SaveChanges();
+            Console.WriteLine(rows + " records inserted");
+            var CategoryQuery = from c in db.Categories select c;
+            foreach (var category in CategoryQuery) { Console.WriteLine(category.CategoryID + "   " + category.CategoryName); }
+
+            Console.WriteLine("15.List CategoryName, ProductName and UnitPrice sort on categoryname");
+            var query15 = from p in db.Products
+                          join
+                          c in db.Categories on p.CategoryID equals c.CategoryID
+                          orderby c.CategoryName
+                          select new { c.CategoryName, p.ProductName, p.UnitPrice };
+            foreach (var p in query15)
+            {
+                Console.WriteLine(p.CategoryName + " " + p.ProductName + "  " + p.UnitPrice);
+            }
+
+            Console.WriteLine("16.LIst categoryname where products are available");
+            var DistinctProductcategoryname = (from p in db.Products
+                                               join
+                                                c in db.Categories on p.CategoryID equals c.CategoryID
+                                               orderby c.CategoryName
+                                               select new { c.CategoryName }).Distinct();
+            foreach (var product in DistinctProductcategoryname)
+            {
+                Console.WriteLine(product.CategoryName);
+            }
+
+            Console.WriteLine("17.LIst categoryname where products are avaialable Also include categoryname where no products are available");
+            var Productcategoryname = (from c in db.Categories
+                                       join
+                                       p in db.Products on c.CategoryID equals p.CategoryID into temp
+                                       from t in temp.DefaultIfEmpty()
+
+                                       select new { c.CategoryName }).Distinct();
+            foreach (var pc in Productcategoryname)
+            {
+                Console.WriteLine(pc.CategoryName);
+            }
+
+            Console.WriteLine("18 list ProductName, CategoryName and Supplier table - company name -- Multi table join");
+            var Query18 = from p in db.Products
+                          join
+                          c in db.Categories on p.CategoryID equals c.CategoryID
+                          join s in db.Suppliers on p.SupplierID equals s.SupplierID
+                          select new { p.ProductName, c.CategoryName, s.CompanyName };
+            foreach (var a in Query18) { Console.WriteLine(a.ProductName + "\t" + a.CategoryName + "\t" + a.CompanyName); }
+
+
+            Console.WriteLine("19.Update record");
+            //Category Table
+            // for newly added Category(Electronics) add description
+            // 11 Electronics All electronics item
+
+            Category updateCategory = (from a in db.Categories
+                                       where a.CategoryName == "Electronics"
+                                       select a).SingleOrDefault();
+
+            if (updateCategory != null)
+            {
+                updateCategory.Description = "All electronics item";
+                int updateRows = db.SaveChanges();
+                Console.WriteLine(updateRows + " records updated.");
+            }
+            else { Console.WriteLine("No category found"); }
+
+            var CategoryQuery19 = (from a in db.Categories
+                                   where a.CategoryName == "Electronics"
+                                   select a);
+
+            foreach (var c in CategoryQuery19) { Console.WriteLine(c.CategoryID + "  " + c.CategoryName + "  " + c.Description); }
+
+            Console.WriteLine("20 delete record of Stationary from Category table");
+
+            Category removeCategory = (from a in db.Categories
+                                       where a.CategoryName == "Stationary"
+                                       select a).SingleOrDefault();
+            if (removeCategory != null)
+            {
+                db.Categories.Remove(removeCategory);
+                int removeRows = db.SaveChanges();
+                Console.WriteLine(removeRows + " records deleted.");
+            }
+            else { Console.WriteLine("No category found"); }
+
+            Console.ReadLine();
+
+        }
+    }
+}
